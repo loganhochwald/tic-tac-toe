@@ -1,32 +1,24 @@
-board =[
-[".",".","."],
-[".",".","."],
-[".",".","."]]
+import streamlit as st
 
-# Global variables
-winner = None
-turn = "X"
-plays = 0
+st.set_page_config(page_title="Tic Tac Toe", page_icon="⚜️", layout="centered")
 
-# Introduction for User
-print("Welcome to Tic Tac Toe!")
-print("Rows go across → and columns go down ↓.")
-print("Enter your moves as row, column.")
-print("For example 0, 2 \n")
-print("  0 1 2")
-print("0 . . X  ← your X goes here")
-print("1 . . .")
-print("2 . . . \n")
-print("Have fun!")
+st.title("NOLA Tac Toe ⚜️")
+st.markdown("Click a square to make your move!")
 
-# Print Board
-def print_board():
-    print("\n  0 1 2")
-    for i, row in enumerate(board):
-        print(f"{i} " + " ".join(row))
-    print()
+# Initialize session state (global variables)
+if "board" not in st.session_state:
+    st.session_state.board = [[".",".","."],[".",".","."],[".",".","."]]
+if "winner" not in st.session_state:
+    st.session_state.winner = None
+if "turn" not in st.session_state:
+    st.session_state.turn = "X"
+if "plays" not in st.session_state:
+    st.session_state.plays = 0
 
+# Check for a winner
 def check_winner():
+    board = st.session_state.board
+
     # Check rows
     for row in board:
         if row[0] != "." and row.count(row[0]) == 3:
@@ -45,41 +37,46 @@ def check_winner():
 
     return None
 
-# Runs while no one has won and there's no tie
-while winner is None and plays < 9:
-    print_board()
-    play = input(f"Player {turn}, input your coordinates as row,col: ").replace(" ", "")
+# Handle a move
+def make_move(row, col):
+    # If there's already a winner or the cell is occupied, do nothing
+    if st.session_state.winner or st.session_state.board[row][col] != ".":
+        return
 
-    #Process the input then check for errors
-    try:
-        row, col = play.split(",")
-        row, col = int(row), int(col)
+    # Make the move
+    st.session_state.board[row][col] = st.session_state.turn
+    st.session_state.plays += 1
 
-        #Error handling
-        if row not in range(3) or col not in range(3):
-            print("\nCoordinates must be 0, 1, or 2.\n")
-            continue
-
-        if board[row][col] != ".":
-            print("\nYou've played here already, silly!\n")
-            continue
-
-    except (ValueError, IndexError):
-        print("\nYour input was written incorrectly, whoops. Input is row, column (such as 0, 2)\n")
-        continue
-
-
-    board[row][col] = turn
-    plays += 1
-
+    # Check for a winner
     winner = check_winner()
     if winner:
-        print_board()
-        print(f"Player {winner} won!")
-        break
+        st.session_state.winner = winner
+    elif st.session_state.plays == 9:
+        st.session_state.winner = "Tie"
+    else:
+        st.session_state.turn = "O" if st.session_state.turn == "X" else "X"
 
-    turn = "O" if turn == "X" else "X"
 
-if not winner:
-    print_board()
-    print("You tied. Play again soon!")
+# Draw the board with streamlit buttons
+for row in range(3):
+    columns = st.columns(3)
+    for col in range(3):
+        value = st.session_state.board[row][col]
+        text = " " if value == "." else value
+        columns[col].button(text, key=f"{row}-{col}", on_click=make_move, args=(row, col), use_container_width=True)
+
+
+# Results
+if st.session_state.winner == "Tie":
+    st.info("You tied. Play again soon!")
+elif st.session_state.winner:
+    st.success(f"Player {st.session_state.winner} won!")
+else:
+    st.write(f"Player {st.session_state.turn}'s turn")
+
+# ---- Restart ----
+if st.button("Restart Game"):
+    st.session_state.board = [["."] * 3 for _ in range(3)]
+    st.session_state.turn = "X"
+    st.session_state.winner = None
+    st.session_state.plays = 0
