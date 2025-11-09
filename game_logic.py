@@ -10,6 +10,12 @@ def init_game_state():
         st.session_state.turn = "X"
     if "plays" not in st.session_state:
         st.session_state.plays = 0
+    if "player_x" not in st.session_state:
+        st.session_state.player_x = "🎭"
+    if "player_o" not in st.session_state:
+        st.session_state.player_o = "🎺"
+    if "emojis_selected" not in st.session_state:
+        st.session_state.emojis_selected = False
 
 # Check for a winner
 def check_winner():
