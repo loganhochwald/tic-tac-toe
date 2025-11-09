@@ -46,6 +46,10 @@ if player_x != player_o:
             
             columns[col].button(text, key=f"{row}-{col}", on_click=make_move, args=(row, col), use_container_width=True)
 
+# Add spacing between board and control buttons
+st.write("")
+st.write("")
+
 col1, col2 = st.columns(2)
 
 with col1:
