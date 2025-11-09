@@ -3,20 +3,20 @@ import streamlit as st
 emoji_choices = ["🎭", "🎺", "🍹", "⚜️"]
 
 # Show dialogue for emoji selection
-@st.dialog("Players, Choose your Game Piece")
+@st.dialog("Players, Choose your Game Emojis!", dismissible=False)
 def choose_emojis():
     # Layout two columns for selection
     col1, col2 = st.columns(2)
     with col1:
         st.session_state.player_x = st.selectbox(
-            "Player X emoji",
+            "Player 1 Emoji",
             emoji_choices,
             key="x",
             index=emoji_choices.index(st.session_state["player_x"])
         )
     with col2:
         st.session_state.player_o = st.selectbox(
-            "Player O emoji",
+            "Player 2 Emoji",
             emoji_choices,
             key="o",
             index=emoji_choices.index(st.session_state["player_o"])

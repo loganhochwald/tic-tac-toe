@@ -6,7 +6,6 @@ from emoji_selector import choose_emojis
 st.set_page_config(page_title="NOLA Tac Toe", page_icon="⚜️", layout="centered")
 
 st.title("NOLA Tac Toe ⚜️")
-st.markdown("Click a square to make your move!")
 
 # Initialize session state
 init_game_state()
@@ -17,6 +16,18 @@ if not st.session_state.get("emojis_selected", False):
 
 player_x = st.session_state.player_x
 player_o = st.session_state.player_o
+
+# Results
+if st.session_state.winner == "Tie":
+    st.info("You tied. Restart Game?")
+elif st.session_state.winner == "X":
+    st.success(f"{player_x} won!")
+elif st.session_state.winner == "O":
+    st.success(f"{player_o} won!")
+else:
+    if st.session_state["emojis_selected"]:
+        current_turn = player_x if st.session_state.turn == "X" else player_o
+        st.write(f"{current_turn}'s turn")
 
 # Draw the board with streamlit buttons and emojis
 if player_x != player_o:
@@ -35,18 +46,13 @@ if player_x != player_o:
             
             columns[col].button(text, key=f"{row}-{col}", on_click=make_move, args=(row, col), use_container_width=True)
 
-# Results
-if st.session_state.winner == "Tie":
-    st.info("You tied. Play again soon!")
-elif st.session_state.winner == "X":
-    st.success(f"{player_x} won!")
-elif st.session_state.winner == "O":
-    st.success(f"{player_o} won!")
-else:
-    if st.session_state["emojis_selected"]:
-        current_turn = player_x if st.session_state.turn == "X" else player_o
-        st.write(f"{current_turn}'s turn")
+col1, col2 = st.columns(2)
 
-# Restart
-if st.button("Restart Game"):
-    reset_game()
+with col1:
+    if st.button("Change Emoji", use_container_width=True):
+        st.session_state.emojis_selected = False
+        choose_emojis()
+
+with col2:
+    if st.button("Restart Game", use_container_width=True):
+        reset_game()
