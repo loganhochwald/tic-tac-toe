@@ -31,17 +31,21 @@ if player_x != player_o:
             elif value == "O":
                 text = player_o
             else:
-                text = value  # fallback
+                text = value
             
             columns[col].button(text, key=f"{row}-{col}", on_click=make_move, args=(row, col), use_container_width=True)
 
 # Results
 if st.session_state.winner == "Tie":
     st.info("You tied. Play again soon!")
-elif st.session_state.winner:
-    st.success(f"Player {st.session_state.winner} won!")
+elif st.session_state.winner == "X":
+    st.success(f"{player_x} won!")
+elif st.session_state.winner == "O":
+    st.success(f"{player_o} won!")
 else:
-    st.write(f"Player {st.session_state.turn}'s turn")
+    if st.session_state["emojis_selected"]:
+        current_turn = player_x if st.session_state.turn == "X" else player_o
+        st.write(f"{current_turn}'s turn")
 
 # Restart
 if st.button("Restart Game"):
