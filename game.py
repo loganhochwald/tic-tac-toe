@@ -19,11 +19,11 @@ player_o = st.session_state.player_o
 
 # Results
 if st.session_state.winner == "Tie":
-    st.info("You tied. Restart Game?")
+    st.info("You tied. Go join a second line.. or Restart Game?")
 elif st.session_state.winner == "X":
-    st.success(f"{player_x} won!")
+    st.success(f"Laissez les bon temps rouler! {player_x} won!")
 elif st.session_state.winner == "O":
-    st.success(f"{player_o} won!")
+    st.success(f"Laissez les bon temps rouler! {player_o} won!")
 else:
     if st.session_state["emojis_selected"]:
         current_turn = player_x if st.session_state.turn == "X" else player_o
@@ -60,3 +60,11 @@ with col1:
 with col2:
     if st.button("Restart Game", use_container_width=True):
         confirm_restart()
+
+## Display Move History
+st.write("### Move History")
+if st.session_state.move_history:
+    for step, move in enumerate(st.session_state.move_history, start=1):
+        st.write(f"{step}. {move}")
+else:
+    st.write("No moves yet.")

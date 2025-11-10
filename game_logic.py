@@ -16,6 +16,8 @@ def init_game_state():
         st.session_state.player_o = "🎺"
     if "emojis_selected" not in st.session_state:
         st.session_state.emojis_selected = False
+    if "move_history" not in st.session_state:
+        st.session_state.move_history = []
 
 # Check for a winner
 def check_winner():
@@ -49,6 +51,10 @@ def make_move(row, col):
     st.session_state.board[row][col] = st.session_state.turn
     st.session_state.plays += 1
 
+    player_emoji = st.session_state.player_x if st.session_state.turn == "X" else st.session_state.player_o
+    st.session_state.move_history.append(f"{player_emoji} -> ({row},{col})")
+
+
     # Check for a winner
     winner = check_winner()
     if winner:
@@ -64,4 +70,5 @@ def reset_game():
     st.session_state.turn = "X"
     st.session_state.winner = None
     st.session_state.plays = 0
+    st.session_state.move_history = []
     st.rerun()
