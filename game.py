@@ -1,14 +1,10 @@
 import streamlit as st
 from game_logic import init_game_state, make_move, reset_game
 from emoji_selector import choose_emojis
-import streamlit_themes as st_theme
-
-# Set theme
-st_theme.set_preset_theme('Tropical')
 
 st.set_page_config(page_title="NOLA Tac Toe", page_icon="⚜️", layout="centered")
 
-st.title("NOLA Tac Toe ⚜️")
+st.title("NOLA-Tac-Toe ⚜️")
 
 # Initialize session state
 init_game_state()
