@@ -1,6 +1,7 @@
 import streamlit as st
 from game_logic import init_game_state, make_move, reset_game
 from emoji_selector import choose_emojis
+from restart import confirm_restart
 
 st.set_page_config(page_title="NOLA Tac Toe", page_icon="⚜️", layout="centered")
 
@@ -58,4 +59,4 @@ with col1:
 
 with col2:
     if st.button("Restart Game", use_container_width=True):
-        reset_game()
+        confirm_restart()
