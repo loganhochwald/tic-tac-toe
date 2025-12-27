@@ -1,4 +1,4 @@
-# NOLA-Tac-Toe ⚜️
+# NOLA-Tac-Toe ⚜️ (Coding Challenge for a Job Interview)
 
 A fun, interactive tic-tac-toe game built with **Streamlit** that lets players choose emojis as their game pieces. The game is NOLA-themed and emphasizes a playful, visual experience.
 
